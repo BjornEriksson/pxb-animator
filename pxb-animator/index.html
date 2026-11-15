@@ -1,0 +1,151 @@
+<!--
+ * PixelBanner (.pxb) Animator - Main Interface
+ * @file index.html
+ * @author BjornEriksson (https://github.com)
+ * @version 0.1.0-beta
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelBanner (.pxb) Animator</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="animator.css">
+</head>
+<body data-preset="default">
+
+  <div id="app-window" class="app-window">
+
+    <!-- SECTION 1: TOP MENU BAR -->
+    <header id="top-menu-bar" class="top-menu-bar">
+      <div class="menu-group">
+        <div class="menu-item">
+          <button type="button" class="menu-trigger">File</button>
+          <div class="menu-dropdown">
+            <button type="button" id="menu-new-pxb">New Animation</button>
+            <hr>
+            <button type="button" id="menu-load-folder">Load Folder of .pxi Frames...</button>
+            <button type="button" id="menu-add-pxi">Add .pxi Frame(s)...</button>
+            <button type="button" id="menu-open-pxb">Open .pxb Animation...</button>
+            <hr>
+            <button type="button" id="menu-save-pxb" disabled>Save as .pxb</button>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <button type="button" class="menu-trigger">Timeline</button>
+          <div class="menu-dropdown">
+            <button type="button" id="menu-enable-all" disabled>Enable All Frames</button>
+            <button type="button" id="menu-reverse-order" disabled>Reverse Frame Order</button>
+            <hr>
+            <button type="button" id="menu-clear-timeline" disabled>Clear Timeline</button>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <button type="button" class="menu-trigger">Studio</button>
+          <div class="menu-dropdown">
+		  <button type="button" onclick="window.open('../pxi-studio/index.html', '_blank', 'noopener')">Open PixelImage (.pxi) Studio</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-title">PixelBanner (.pxb) Animator v0.1</div>
+    </header>
+
+    <!-- Hidden File & Folder Inputs -->
+    <input type="file" id="folder-input-pxi" webkitdirectory directory multiple hidden>
+    <input type="file" id="files-input-pxi" accept=".pxi" multiple hidden>
+    <input type="file" id="file-input-pxb" accept=".pxb" hidden>
+
+    <!-- SECTION 2: MIDDLE WORKSPACE & BOTTOM TIMELINE -->
+    <div class="animator-workspace">
+      <div class="animator-top-area">
+
+        <!-- Preview Viewport -->
+        <main id="canvas-viewport" class="canvas-viewport">
+          <div id="canvas-frame" class="canvas-frame">
+            <canvas id="preview-canvas" width="300" height="250"></canvas>
+          </div>
+        </main>
+
+        <!-- Right Playback & Export Sidebar -->
+        <aside class="animator-sidebar">
+
+          <section class="sidebar-section">
+            <div class="panel-label">Playback</div>
+            <div class="transport-row">
+              <button type="button" id="btn-prev" class="transport-btn" title="Previous Frame" disabled>⏮</button>
+              <button type="button" id="btn-play" class="transport-btn" title="Play / Pause" disabled>▶ Play</button>
+              <button type="button" id="btn-next" class="transport-btn" title="Next Frame" disabled>⏭</button>
+            </div>
+
+            <label class="checkbox-row">
+              <input type="checkbox" id="chk-loop" checked>
+              <span>Loop Animation (0x01)</span>
+            </label>
+          </section>
+
+          <section class="sidebar-section">
+            <div class="panel-label">Timing (ms)</div>
+            <div class="control-row">
+              <label for="global-delay-input">Default Delay:</label>
+              <input type="number" id="global-delay-input" min="10" max="65535" step="10" value="120">
+            </div>
+            <button type="button" id="btn-apply-delay" class="mini-btn" style="width:100%;" disabled>Apply Delay to All Frames</button>
+          </section>
+
+          <section class="sidebar-section">
+            <div class="panel-label">Animation Info</div>
+            <div style="font-size:11px; line-height:1.6;">
+              <div><strong>Grid:</strong> <span id="info-grid">--</span></div>
+              <div><strong>Palette:</strong> <span id="info-palette">--</span></div>
+              <div><strong>Active Frames:</strong> <span id="info-active-frames">0</span></div>
+              <div><strong>Total Duration:</strong> <span id="info-duration">0 ms</span></div>
+            </div>
+          </section>
+
+          <section class="sidebar-section">
+            <div class="panel-label">Signature (Optional)</div>
+            <input type="text" id="creator-signature" maxlength="64" placeholder="Anonymous (no timestamp)">
+          </section>
+
+        </aside>
+      </div>
+
+      <!-- Bottom Frame Timeline -->
+      <section class="timeline-panel">
+        <div class="timeline-header">
+          <span class="panel-label" style="margin:0; border:none;">Frame Timeline (Non-Destructive)</span>
+          <span id="timeline-hint" style="font-size:11px; color:var(--text-muted);">Load a project folder of .pxi frames to begin</span>
+        </div>
+        <div id="timeline-track" class="timeline-track">
+          <div class="timeline-empty">No frames loaded yet. Use <strong>File → Load Folder of .pxi Frames...</strong></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- SECTION 3: BOTTOM STATUS BAR -->
+    <footer id="status-bar" class="status-bar">
+      <span id="status-frame">Frame: 0 / 0</span>
+      <span id="status-dims">Grid: --</span>
+      <span id="status-msg">Ready</span>
+    </footer>
+
+  </div>
+
+  <!-- Shared Core Modules from Root -->
+  <script src="../color-palettes.js"></script>
+  <script src="../color.js"></script>
+  <script src="../studio-config.js"></script>
+  <script src="../pxi-codec.js"></script>
+
+  <!-- Animator Modules -->
+  <script src="pxb-codec.js"></script>
+  <script src="timeline-ui.js"></script>
+  <script src="animator-handlers.js"></script>
+  <script src="animator.js"></script>
+
+</body>
+</html>
