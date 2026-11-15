@@ -5,6 +5,14 @@
 
 **PixelBanner Animator** is a lightweight, zero-dependency, browser-based timeline assembler and animation tool built as a companion to **PixelImage (`.pxi`) Studio** [^1].
 
+---
+
+## Movie Preview
+
+https://github.com/user-attachments/assets/20187e13-1f9e-42f3-a91a-1574a004eabe
+
+---
+
 ## Key Features (Beta v0.1.0)
 
 * **Folder-Based `.pxi` Import:** Load and sort `.pxi` frame folders with strict validation [^1].
